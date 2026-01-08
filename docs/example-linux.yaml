@@ -1,0 +1,34 @@
+name: "Setup jq Example - Linux"
+
+# you may need to change this block for your purposes.
+permissions: {}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        required: false
+        description: 'Version of jq to install'
+        default: '1.7.1'
+      force:
+        type: boolean
+        required: false
+        description: 'Do not check for existing jq installation before continuing.'
+        default: false
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Setup jq'
+        uses: step-security/install-jq-action@v3
+        with:
+          version: '${{ inputs.version }}'
+          force: '${{ inputs.force }}'
+
+      - name: 'Check jq'
+        # language=sh
+        run: |
+          which jq
+          jq --version
