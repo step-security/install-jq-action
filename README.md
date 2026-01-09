@@ -1,5 +1,5 @@
 # install-jq-action
-Multiplatform [jq](https://github.com/stedolan/jq) installer action
+Multiplatform [jq](https://github.com/jqlang/jq) installer action
 
 [![Tests - Install jq Action](https://github.com/step-security/install-jq-action/actions/workflows/tests.yaml/badge.svg)](https://github.com/step-security/install-jq-action/actions/workflows/tests.yaml)
 
@@ -34,7 +34,7 @@ This action is tested against the following versions of JQ:
     default: "1.7.1"
 ```
 
-This must be a version with a [corresponding release](https://github.com/stedolan/jq/releases).
+This must be a version with a [corresponding release](https://github.com/jqlang/jq/releases).
 
 #### force
 ```yaml

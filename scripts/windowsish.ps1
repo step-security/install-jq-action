@@ -20,7 +20,7 @@ switch ($Env:RUNNER_ARCH)
     }
 }
 
-$_base_url = "https://github.com/stedolan/jq/releases/download"
+$_base_url = "https://github.com/jqlang/jq/releases/download"
 
 $_dl_name = "${_bin_name}"
 $_dl_path = "$Env:RUNNER_TEMP\${_dl_name}"

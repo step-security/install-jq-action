@@ -6,7 +6,7 @@ echo '::group::Prep'
 
 # validate input and prepare some vars
 
-_base_url='https://github.com/stedolan/jq/releases/download'
+_base_url='https://github.com/jqlang/jq/releases/download'
 
 _os=
 _arch=
