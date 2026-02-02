@@ -28,24 +28,43 @@ runs:
   using: composite
   steps:
     - name: Subscription check
+      env:
+        REPO_PRIVATE: ${{ github.event.repository.private }}
       run: |
         # validate subscription status
-        API_URL="https://agent.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/subscription"
+        VISIBILITY_UNKNOWN=false
 
-        # Set a timeout for the curl command (3 seconds)
-        RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" "$API_URL" -o /dev/null) || true
-        CURL_EXIT_CODE=$?
+        # Check if repository visibility is unknown
+        if [ -z "$REPO_PRIVATE" ]; then
+          VISIBILITY_UNKNOWN=true
+        fi
 
-        # Decide based on curl exit code and HTTP status
-        if [ $CURL_EXIT_CODE -ne 0 ]; then
-          echo "Timeout or API not reachable. Continuing to next step."
-        elif [ "$RESPONSE" = "200" ]; then
-          :
-        elif [ "$RESPONSE" = "403" ]; then
-          echo "Subscription is not valid. Reach out to support@stepsecurity.io"
-          exit 1
+        if [ "$REPO_PRIVATE" = "false" ]; then
+          echo "Repository is not private, skipping subscription validation."
         else
-          echo "Timeout or API not reachable. Continuing to next step."
+          API_URL="https://agent.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/subscription"
+          SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
+
+          # Build query parameters
+          PARAMS=""
+          [ -n "$GITHUB_ACTION_REPOSITORY" ] && PARAMS="action=$GITHUB_ACTION_REPOSITORY"
+          [ "$SERVER_URL" != "https://github.com" ] && PARAMS="${PARAMS:+$PARAMS&}ghes_server=$SERVER_URL"
+          [ "$VISIBILITY_UNKNOWN" = "true" ] && PARAMS="${PARAMS:+$PARAMS&}repo_visibility=unknown"
+
+          [ -n "$PARAMS" ] && API_URL="$API_URL?$PARAMS"
+
+          RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" "$API_URL" -o /dev/null) || true
+
+          if [ "$RESPONSE" = "403" ]; then
+            echo "This StepSecurity maintained action is free for public repositories."
+            echo "This repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed."
+            echo ""
+            echo "Learn more:"
+            echo "https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+            exit 1
+          elif [ "$RESPONSE" != "200" ]; then
+            echo "Timeout or API not reachable. Continuing to next step."
+          fi
         fi
       shell: bash
 
