@@ -56,11 +56,7 @@ runs:
           RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" "$API_URL" -o /dev/null) || true
 
           if [ "$RESPONSE" = "403" ]; then
-            echo "This StepSecurity maintained action is free for public repositories."
-            echo "This repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed."
-            echo ""
-            echo "Learn more:"
-            echo "https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+            echo "::error::This StepSecurity maintained action is free for public repositories.%0AThis repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed.%0A%0ALearn more:%0Ahttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
             exit 1
           elif [ "$RESPONSE" != "200" ]; then
             echo "Timeout or API not reachable. Continuing to next step."
