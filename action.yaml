@@ -39,6 +39,12 @@ runs:
           VISIBILITY_UNKNOWN=true
         fi
 
+        # Display StepSecurity maintained action message
+        echo -e "\033[1;36m•\033[0m StepSecurity Maintained Action"
+        echo -e "  \033[33m•\033[0m Free for public repositories"
+        echo -e "  \033[33m•\033[0m Learn more: https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+        echo ""
+
         if [ "$REPO_PRIVATE" = "false" ]; then
           echo "Repository is not private, skipping subscription validation."
         else
@@ -56,7 +62,7 @@ runs:
           RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" "$API_URL" -o /dev/null) || true
 
           if [ "$RESPONSE" = "403" ]; then
-            echo "::error::This StepSecurity maintained action is free for public repositories.%0AThis repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed.%0A%0ALearn more:%0Ahttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+            echo "::error::This StepSecurity maintained action is free for public repositories.%0AThis repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed.%0ALearn more:%0Ahttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
             exit 1
           elif [ "$RESPONSE" != "200" ]; then
             echo "Timeout or API not reachable. Continuing to next step."
