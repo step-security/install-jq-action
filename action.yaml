@@ -39,12 +39,6 @@ runs:
           VISIBILITY_UNKNOWN=true
         fi
 
-        # Display StepSecurity maintained action message
-        echo -e "\033[36m•\033[0m StepSecurity maintained action"
-        echo -e "  \033[36m•\033[0m free for public repositories"
-        echo -e "  \033[36m•\033[0m \033[94mhttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions\033[0m"
-        echo ""
-
         if [ "$REPO_PRIVATE" = "false" ]; then
           echo "Repository is not private, skipping subscription validation."
         else
