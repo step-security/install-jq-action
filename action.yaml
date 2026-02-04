@@ -30,18 +30,17 @@ runs:
     - name: Subscription check
       env:
         REPO_PRIVATE: ${{ github.event.repository.private }}
+        FORCE_COLOR: "1"
       run: |
         # --- Maintained Actions banner ---
         ESC=$'\033'
         RESET="${ESC}[0m"
         BOLD="${ESC}[1m"
         CYAN="${ESC}[36m"
-        DIM="${ESC}[2m"
 
         printf "\n${BOLD}${CYAN}• StepSecurity maintained action${RESET}\n"
-        printf "${DIM}  • free for public repositories${RESET}\n"
-        printf "${DIM}  • private repos require Enterprise subscription${RESET}\n\n"
-
+        printf "${BOLD}${CYAN}  • free for public repositories${RESET}\n"
+        printf "${BOLD}${CYAN}  • private repos require Enterprise subscription${RESET}\n\n"
         # validate subscription status
         VISIBILITY_UNKNOWN=false
 
