@@ -31,6 +31,11 @@ runs:
       env:
         REPO_PRIVATE: ${{ github.event.repository.private }}
       run: |
+        # --- Maintained Actions banner (visible + colored) ---
+        CYAN="\033[36m"; BOLD="\033[1m"; RESET="\033[0m"; GRAY="\033[90m"
+        printf "\n${BOLD}${CYAN}StepSecurity Maintained Action${RESET}\n"
+        printf "${GRAY}Free for public repos • Private repos require Enterprise subscription${RESET}\n\n"
+
         # validate subscription status
         VISIBILITY_UNKNOWN=false
 
