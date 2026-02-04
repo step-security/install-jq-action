@@ -32,19 +32,18 @@ runs:
         REPO_PRIVATE: ${{ github.event.repository.private }}
         FORCE_COLOR: "1"
       run: |
-        # Maintained Actions banner (soft highlight)
+        # Maintained Actions banner (yellow header, bold white body)
         ESC=$'\033'
         RESET="${ESC}[0m"
         BOLD="${ESC}[1m"
         DIM="${ESC}[2m"
-        YELLOW="${ESC}[33m"      # classic yellow
-        SOFTY="${ESC}[93m"       # softer/brighter yellow (usually looks better in dark theme)
+        YELLOW="${ESC}[33m"
 
-        printf "\n${DIM}${SOFTY}────────────────────────────────────────${RESET}\n"
-        printf "${BOLD}${SOFTY}StepSecurity Maintained Action${RESET}\n"
-        printf "${DIM}${YELLOW}  Free for public repositories${RESET}\n"
-        printf "${DIM}${YELLOW}  Private repositories require Enterprise subscription${RESET}\n"
-        printf "${DIM}${SOFTY}────────────────────────────────────────${RESET}\n\n"
+        printf "\n${DIM}────────────────────────────────────────${RESET}\n"
+        printf "${BOLD}${YELLOW}StepSecurity Maintained Action${RESET}\n"
+        printf "${BOLD}  Free for public repositories${RESET}\n"
+        printf "${BOLD}  Private repositories require Enterprise subscription${RESET}\n"
+        printf "${DIM}────────────────────────────────────────${RESET}\n\n"
 
         # validate subscription status
         VISIBILITY_UNKNOWN=false
