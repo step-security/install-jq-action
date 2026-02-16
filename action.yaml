@@ -56,7 +56,7 @@ runs:
         if [ "$REPO_PRIVATE" = "false" ]; then
           echo "Repository is not private, skipping subscription validation."
         else
-          API_URL="https://agent.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/subscription"
+          API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 
           # Build query parameters
