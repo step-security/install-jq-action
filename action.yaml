@@ -59,15 +59,14 @@ runs:
           API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 
-          # Build query parameters
-          PARAMS=""
-          [ -n "$GITHUB_ACTION_REPOSITORY" ] && PARAMS="action=$GITHUB_ACTION_REPOSITORY"
-          [ "$SERVER_URL" != "https://github.com" ] && PARAMS="${PARAMS:+$PARAMS&}ghes_server=$SERVER_URL"
-          [ "$VISIBILITY_UNKNOWN" = "true" ] && PARAMS="${PARAMS:+$PARAMS&}repo_visibility=unknown"
+          # Build JSON request body
+          JSON_BODY="{\"action\":\"$GITHUB_ACTION_REPOSITORY\""
+          if [ "$SERVER_URL" != "https://github.com" ]; then
+            JSON_BODY="$JSON_BODY,\"ghes_server\":\"$SERVER_URL\""
+          fi
+          JSON_BODY="$JSON_BODY}"
 
-          [ -n "$PARAMS" ] && API_URL="$API_URL?$PARAMS"
-
-          RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" "$API_URL" -o /dev/null) || true
+          RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$JSON_BODY" "$API_URL" -o /dev/null) || true
 
           if [ "$RESPONSE" = "403" ]; then
             echo "::error::This StepSecurity maintained action is free for public repositories.%0AThis repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed.%0ALearn more:%0Ahttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
