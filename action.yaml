@@ -66,6 +66,9 @@ runs:
           fi
           JSON_BODY="$JSON_BODY}"
 
+          echo "POST $API_URL"
+          echo "Body: $JSON_BODY"
+
           RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$JSON_BODY" "$API_URL" -o /dev/null) || true
 
           if [ "$RESPONSE" = "403" ]; then
