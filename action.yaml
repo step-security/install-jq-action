@@ -31,6 +31,7 @@ runs:
       env:
         REPO_PRIVATE: ${{ github.event.repository.private }}
         FORCE_COLOR: "1"
+        ACTION_REPOSITORY: ${{ github.action_repository }}
       run: |
         # Maintained Actions banner (GoReleaser-style bullets)
         ESC=$'\033'
@@ -60,7 +61,7 @@ runs:
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 
           # Build JSON request body
-          JSON_BODY="{\"action\":\"$GITHUB_ACTION_REPOSITORY\""
+          JSON_BODY="{\"action\":\"$ACTION_REPOSITORY\""
           if [ "$SERVER_URL" != "https://github.com" ]; then
             JSON_BODY="$JSON_BODY,\"ghes_server\":\"$SERVER_URL\""
           fi
