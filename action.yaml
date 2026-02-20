@@ -41,11 +41,12 @@ runs:
         # validate subscription status
         if [ "$REPO_PRIVATE" = "false" ]; then
           echo -e "\033[32m✓ Free for public repositories\033[0m"
-          echo -e "\033[36mhttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions\033[0m"
-          echo ""
-        else
-          echo -e "\033[36mhttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions\033[0m"
-          echo ""
+        fi
+
+        echo -e "\033[36mLearn more:\033[0m https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+        echo ""
+
+        if [ "$REPO_PRIVATE" != "false" ]; then
 
           API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
