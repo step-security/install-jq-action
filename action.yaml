@@ -33,27 +33,19 @@ runs:
         FORCE_COLOR: "1"
         ACTION_REPOSITORY: ${{ github.action_repository }}
       run: |
-        # ANSI colors
-        ESC=$'\033'
-        RESET="${ESC}[0m"
-        BOLD="${ESC}[1m"
-        YELLOW="${ESC}[33m"
-        GREEN="${ESC}[32m"
-        CYAN="${ESC}[36m"
-
         # Banner
-        printf "\n"
-        printf "${BOLD}${YELLOW}StepSecurity Maintained Action${RESET}\n"
-        printf "Secure, reviewed, drop-in replacement for dcarbone/install-jq-action\n"
+        echo ""
+        echo -e "\033[1;33mStepSecurity Maintained Action\033[0m"
+        echo "Secure, reviewed, drop-in replacement for dcarbone/install-jq-action"
 
         # validate subscription status
         if [ "$REPO_PRIVATE" = "false" ]; then
-          printf "${GREEN}✓ Free for public repositories${RESET}\n"
-          printf "${CYAN}https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions${RESET}\n"
-          printf "\n"
+          echo -e "\033[32m✓ Free for public repositories\033[0m"
+          echo -e "\033[36mhttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions\033[0m"
+          echo ""
         else
-          printf "${CYAN}https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions${RESET}\n"
-          printf "\n"
+          echo -e "\033[36mhttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions\033[0m"
+          echo ""
 
           API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
