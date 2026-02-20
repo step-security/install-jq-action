@@ -33,30 +33,28 @@ runs:
         FORCE_COLOR: "1"
         ACTION_REPOSITORY: ${{ github.action_repository }}
       run: |
-        # Maintained Actions banner (GoReleaser-style bullets)
+        # ANSI colors
         ESC=$'\033'
         RESET="${ESC}[0m"
         BOLD="${ESC}[1m"
         YELLOW="${ESC}[33m"
-        BLUE="${ESC}[94m"   # soft blue dot (like GoReleaser)
-        DIM="${ESC}[2m"
+        GREEN="${ESC}[32m"
+        CYAN="${ESC}[36m"
 
+        # Banner
         printf "\n"
-        printf "${BOLD}${YELLOW}• StepSecurity Maintained Action${RESET}\n"
-        printf "  ${BLUE}•${RESET} ${BOLD}Free for public repositories${RESET}\n"
-        printf "  ${BLUE}•${RESET} ${BOLD}Private repositories require Enterprise subscription${RESET}\n\n"
+        printf "${BOLD}${YELLOW}StepSecurity Maintained Action${RESET}\n"
+        printf "Secure, reviewed, drop-in replacement for dcarbone/install-jq-action\n"
 
         # validate subscription status
-        VISIBILITY_UNKNOWN=false
-
-        # Check if repository visibility is unknown
-        if [ -z "$REPO_PRIVATE" ]; then
-          VISIBILITY_UNKNOWN=true
-        fi
-
         if [ "$REPO_PRIVATE" = "false" ]; then
-          echo "Repository is not private, skipping subscription validation."
+          printf "${GREEN}✓ Free for public repositories${RESET}\n"
+          printf "${CYAN}https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions${RESET}\n"
+          printf "\n"
         else
+          printf "${CYAN}https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions${RESET}\n"
+          printf "\n"
+
           API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 
@@ -67,13 +65,11 @@ runs:
           fi
           JSON_BODY="$JSON_BODY}"
 
-          echo "POST $API_URL"
-          echo "Body: $JSON_BODY"
-
           RESPONSE=$(curl --max-time 3 -s -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$JSON_BODY" "$API_URL" -o /dev/null) || true
 
           if [ "$RESPONSE" = "403" ]; then
-            echo "::error::This StepSecurity maintained action is free for public repositories.%0AThis repository is private and does not currently have a StepSecurity Enterprise subscription enabled, so the action was not executed.%0ALearn more:%0Ahttps://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
+            echo "::error::This action requires a StepSecurity subscription for private repositories."
+            echo "::error::Learn how to enable a subscription: https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions"
             exit 1
           elif [ "$RESPONSE" != "200" ]; then
             echo "Timeout or API not reachable. Continuing to next step."
