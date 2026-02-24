@@ -48,7 +48,7 @@ runs:
 
         if [ "$REPO_PRIVATE" != "false" ]; then
 
-          API_URL="https://agent.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
+          API_URL="https://int.api.stepsecurity.io/v1/github/$GITHUB_REPOSITORY/actions/maintained-actions-subscription"
           SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 
           # Build JSON request body
