@@ -101,7 +101,12 @@ jobs:
     name: "Test Action - (img: ${{ matrix.image }}; version: ${{ matrix.version }}; force: ${{ matrix.force }})"
     runs-on: ${{ matrix.image }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup jq
         id: install-jq
@@ -243,7 +248,7 @@ jobs:
     container:
       image: node:20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup jq
         id: install-jq
@@ -316,7 +321,7 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup jq
         uses: ./
