@@ -1,7 +1,21 @@
-name: "Setup jq Example - Linux"
+name: "Setup jq Example - Windows"
 
 # you may need to change this block for your purposes.
-permissions: {}
+permissions:
+  actions: none
+  attestations: none
+  checks: none
+  contents: none
+  deployments: none
+  id-token: none
+  issues: none
+  models: none
+  discussions: none
+  packages: none
+  pages: none
+  pull-requests: none
+  security-events: none
+  statuses: none
 
 on:
   workflow_dispatch:
@@ -10,7 +24,7 @@ on:
         type: string
         required: false
         description: 'Version of jq to install'
-        default: '1.7.1'
+        default: '1.8.2'
       force:
         type: boolean
         required: false
@@ -22,7 +36,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 'Setup jq'
-        uses: step-security/install-jq-action@v3
+        uses: step-security/install-jq-action@v4
         with:
           version: '${{ inputs.version }}'
           force: '${{ inputs.force }}'
